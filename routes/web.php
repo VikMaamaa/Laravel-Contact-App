@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
-
-Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
 
 Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
 
@@ -32,6 +32,11 @@ Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contac
 Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 Route::get('/contacts/{id}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+});
+
+
+
+
 
 Auth::routes();
 
