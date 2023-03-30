@@ -46,10 +46,17 @@ Route::get('/', function () {
 // ]);
 
 
-Route::resource('/contacts', ContactController::class);
+// Route::resource('/contacts', ContactController::class)->parameters([
+//     'contacts' => 'kontak'
+// ]);
+
+// Route::resource('/contacts', ContactController::class)->names([
+//     'index' => 'contacts.all',
+//     'show' =>  'contacts.view'
+// ]);
 
 // Route::resource('/companies.contacts', ContactController::class);
-
+Route::resource('/contacts', ContactController::class);
  //  ->only(['create', 'store', 'edit', 'update', 'destroy']);
  Route::resource('/companies', CompanyController::class);
 
