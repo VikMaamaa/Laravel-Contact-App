@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CompanyController;
-use App\Http\Controllers\API\ContactController as APIContactController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\API\ContactController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//   Route::apiResource('/contacts', ContactController::class);
-
-Route::apiResources([
-    '/contacts', APIContactController::class,
-    '/company', CompanyController::class
-]);
+Route::apiResource('/contacts', ContactController::class);
+Route::apiResource('/company', CompanyController::class);
+// Route::apiResources([
+//     // 'contacts', ContactController::class,
+//     'company', CompanyController::class
+// ]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
