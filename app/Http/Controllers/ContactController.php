@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Company;
 use App\Models\Contact;
 use Illuminate\Http\Request;
@@ -15,10 +16,10 @@ class ContactController extends Controller
 
     public function index() {
 
-        $user = auth()->user();
-        $companies = $user->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+
+        $companies = Company::userCompanies();
         // \DB::enableQueryLog();
-        $contacts = $user->contacts()->latestFirst()->paginate(10);
+        $contacts = auth()->user()->contacts()->latestFirst()->paginate(10);
         // dd(\DB::getQuerylog());
         // dd($contacts);
         return view('contacts.index', compact('contacts', 'companies'));
@@ -26,22 +27,18 @@ class ContactController extends Controller
 
     public function create() {
         $contact = new Contact();
-        $companies = auth()->user()->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+        $companies = Company::userCompanies();
 
         return view('contacts.create', compact('companies', 'contact'));
     }
 
-    public function store(Request $request)
+
+
+    public function store(ContactRequest $request)
     {
         // dd($request->all());
         // dd(auth()->user()->id);
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'address' => 'required',
-            'company_id' => 'required|exists:companies,id',
-        ]);
+
 
         $request->user()->contacts()->create($request->all());
         // dd($request->all());
@@ -49,21 +46,24 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('message',"Contact has been added successfully");
     }
 
+    protected function validationRules()
+    {
+
+       return [
+
+       ];
+    }
+
+
     public function edit(Contact $contact) {
         // $contact = Contact::findOrFail($id);
-        $companies = auth()->user()->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+        $companies = Company::userCompanies();
 
         return view('contacts.edit', compact('companies', 'contact'));
     }
 
-    public function update(Contact $contact, Request $request){
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'address' => 'required',
-            'company_id' => 'required|exists:companies,id',
-        ]);
+    public function update(Contact $contact, ContactRequest $request){
+        $request->validate($this->validationRules());
 
         // $contact = Contact::findOrfail($id);
         $contact->update($request->all());

@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 //     Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
 
@@ -33,11 +33,14 @@ Route::get('/', function () {
 // Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 // Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+Route::resource('/contacts', ContactController::class);
+ //  ->only(['create', 'store', 'edit', 'update', 'destroy']);
+ Route::resource('/companies', CompanyController::class);
 
-// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::get('/settings/account', [AccountController::class, 'index']);
-// });
+Route::get('/settings/account', [AccountController::class, 'index']);
+});
 
 // Route::resource([
 //     '/companies' =>  CompanyController::class,
@@ -56,9 +59,7 @@ Route::get('/', function () {
 // ]);
 
 // Route::resource('/companies.contacts', ContactController::class);
-Route::resource('/contacts', ContactController::class);
- //  ->only(['create', 'store', 'edit', 'update', 'destroy']);
- Route::resource('/companies', CompanyController::class);
+
 
 
 Auth::routes(['verify' => true]);
