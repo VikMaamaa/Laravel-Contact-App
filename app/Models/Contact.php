@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
      use HasFactory;
-    protected $fillable = ['first_name', 'last_name', 'email', 'phone', 'address', 'company_id'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'phone', 'address', 'company_id', 'user_id'];
 
     // protected $filterColumns = ['company_id'];
 
@@ -31,6 +31,11 @@ class Contact extends Model
         static::addGlobalScope(new ContactFilterScope);
         static::addGlobalScope(new ContactSearchScope);
     }
+
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
     // public function scopeFilter($query){
     //     if($companyId = request('company_id'))  {
     //         $query->where('company_id', $companyId);
@@ -41,5 +46,10 @@ class Contact extends Model
     //     }
 
     //     return $query;
+    // }
+
+    // public function getRouteKeyName()
+    // {
+    //     return  'first_name';
     // }
 }

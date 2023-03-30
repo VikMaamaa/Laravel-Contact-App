@@ -31,7 +31,7 @@
 
             <ul class="navbar-nav">
             <li class="nav-item"><a href="#" class="nav-link">Companies</a></li>
-            <li class="nav-item active"><a href="#" class="nav-link">Contacts</a></li>
+            <li class="nav-item active"><a href="{{ route('contacts.index')}}" class="nav-link">Contacts</a></li>
           </ul>
           @endauth
           <ul class="navbar-nav ml-auto">
@@ -43,7 +43,7 @@
             @else
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{auth()->user->name}}
+                {{auth()->user()->name}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="profile.html">Settings</a>
@@ -69,6 +69,6 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>d
+    <script src="{{ asset('js/app.js') }}"></script>
   </body>
 </html>

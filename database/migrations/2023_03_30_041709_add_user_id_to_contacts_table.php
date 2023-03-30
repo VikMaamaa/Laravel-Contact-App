@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('address')->nullable();
-            $table->string('website')->nullable();
-            $table->string('email');
-
+        Schema::table('contacts', function (Blueprint $table) {
+            // $table->unsignedBigInteger('user_id')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -32,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
     }
 };

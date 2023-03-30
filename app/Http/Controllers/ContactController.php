@@ -14,22 +14,27 @@ class ContactController extends Controller
     // }
 
     public function index() {
-        $companies = Company::orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+
+        $user = auth()->user();
+        $companies = $user->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
         // \DB::enableQueryLog();
-        $contacts = Contact::latestFirst()->paginate(10);
+        $contacts = $user->contacts()->latestFirst()->paginate(10);
         // dd(\DB::getQuerylog());
+        // dd($contacts);
         return view('contacts.index', compact('contacts', 'companies'));
     }
 
     public function create() {
         $contact = new Contact();
-        $companies = Company::orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+        $companies = auth()->user()->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
 
         return view('contacts.create', compact('companies', 'contact'));
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
+        // dd(auth()->user()->id);
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -38,20 +43,20 @@ class ContactController extends Controller
             'company_id' => 'required|exists:companies,id',
         ]);
 
-        Contact::create($request->all());
+        $request->user()->contacts()->create($request->all());
         // dd($request->all());
 
         return redirect()->route('contacts.index')->with('message',"Contact has been added successfully");
     }
 
-    public function edit($id) {
-        $contact = Contact::findOrFail($id);
-        $companies = Company::orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
+    public function edit(Contact $contact) {
+        // $contact = Contact::findOrFail($id);
+        $companies = auth()->user()->companies()->orderBy('name')->pluck('name', 'id')->prepend('All Companies', '');
 
         return view('contacts.edit', compact('companies', 'contact'));
     }
 
-    public function update($id, Request $request){
+    public function update(Contact $contact, Request $request){
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -60,20 +65,20 @@ class ContactController extends Controller
             'company_id' => 'required|exists:companies,id',
         ]);
 
-        $contact = Contact::findOrfail($id);
+        // $contact = Contact::findOrfail($id);
         $contact->update($request->all());
         // dd($request->all());
 
         return redirect()->route('contacts.index')->with('message',"Contact has been updated successfully");
     }
 
-    public function show($id) {
-        $contact  = Contact::findOrFail($id);
+    public function show(Contact $contact) {
+        //  $contact  = $id;
         return view('contacts.show', compact('contact'));
     }
 
-    public function destroy($id) {
-        $contact = Contact::findOrFail($id);
+    public function destroy(Contact $contact) {
+        // $contact = Contact::findOrFail($id);
         $contact->delete();
 
         return back()->with('message', 'Contact has been deleted successfully');
