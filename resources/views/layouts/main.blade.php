@@ -11,6 +11,7 @@
     <!-- Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}"rel="stylesheet">
+    @yield('styles')
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
   </head>
   <body>
@@ -30,8 +31,9 @@
 
 
             <ul class="navbar-nav">
-            <li class="nav-item"><a href="#" class="nav-link">Companies</a></li>
-            <li class="nav-item active"><a href="{{ route('contacts.index')}}" class="nav-link">Contacts</a></li>
+
+            <li class="nav-item {{ request()->is('companies*')? 'active' : ''}}"><a href="{{route('companies.index')}}" class="nav-link">Companies</a></li>
+            <li class="nav-item {{ request()->is('contacts*')? 'active' : ''}}"><a href="{{ route('contacts.index')}}" class="nav-link">Contacts</a></li>
           </ul>
           @endauth
           <ul class="navbar-nav ml-auto">
@@ -46,7 +48,7 @@
                 {{auth()->user()->name}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="profile.html">Settings</a>
+                <a class="dropdown-item" href="{{ route('settings.profile.edit')}}">Settings</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -69,6 +71,7 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+   @yield('scripts')
     <script src="{{ asset('js/app.js') }}"></script>
   </body>
 </html>

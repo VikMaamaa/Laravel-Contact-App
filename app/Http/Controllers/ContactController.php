@@ -19,7 +19,7 @@ class ContactController extends Controller
 
         $companies = Company::userCompanies();
         // \DB::enableQueryLog();
-        $contacts = auth()->user()->contacts()->latestFirst()->paginate(10);
+        $contacts = auth()->user()->contacts()->with('company')->latestFirst()->paginate(10);
         // dd(\DB::getQuerylog());
         // dd($contacts);
         return view('contacts.index', compact('contacts', 'companies'));
@@ -63,7 +63,7 @@ class ContactController extends Controller
     }
 
     public function update(Contact $contact, ContactRequest $request){
-        $request->validate($this->validationRules());
+        // $request->validate($this->validationRules());
 
         // $contact = Contact::findOrfail($id);
         $contact->update($request->all());

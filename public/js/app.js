@@ -1,4 +1,4 @@
-document.getElementById('filter_company_id').addEventListener('change', function () {
+document.getElementById('filter_company_id')?.addEventListener('change', function () {
    let companyId = this.value || this.options[this.selectedIndex].value
    window.location.href = window.location.href.split('?')[0] + '?company_id=' + companyId
 })
@@ -17,12 +17,12 @@ document.querySelectorAll('.btn-delete').forEach((button)=>{
 })
 
 
-document.getElementById('btn-clear').addEventListener('click',()=>{
+document.getElementById('btn-clear')?.addEventListener('click',()=>{
     let input = document.getElementById('search'),
     select = document.getElementById('filter_company_id')
 
     input.value = ""
-    select.selectedIndex = 0
+    if(select?.selectedIndex) select.selectedIndex = 0;
 
     window.location.href = window.location.href.split('?')[0]
 })
@@ -33,9 +33,9 @@ const toggleClearButton = () => {
         button = document.getElementById('btn-clear') // ?company_id=1&search=
 
     if(pattern.test(query)){
-        button.style.display = "block"
+        button?.style.display = "block"
     }else{
-        button.style.display = "none"
+        button?.style.display = "none"
     }
 }
 
