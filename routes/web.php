@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,9 @@ Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('setti
 
 Route::put('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
 
-
+Route::get('/download', function() {
+ return  Storage::download('profile-picture-61.jpg');
+});
 });
 
 // Route::resource([

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -47,7 +48,12 @@ class ProfileUpdateRequest extends FormRequest
 
             $fileName = "profile-picture-{$profile->id}." . $picture->getClientOriginalExtension();
 
-            $picture->move(public_path('upload'), $fileName);
+            // $picture->move(public_path('upload'), $fileName);
+
+            // $fileName = Storage::putFileAs('uploads', $picture, "profile-picture-{$profile->id}." . $picture->getClientOriginalExtension());
+
+           $fileName = $picture->storeAs('uploads', $fileName);
+
             $profileData['profile_picture'] = $fileName;
         }
 
