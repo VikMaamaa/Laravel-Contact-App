@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -22,15 +23,25 @@ class ProfileController extends Controller
     }
 
     public function update(ProfileUpdateRequest $request) {
-
+        $profileData = $request->validated();
+        $profile  = $request->user();
         // dump($request->file('profile_picture'));
 
-        $picture  = $request->profile_picture;
-        $picture->move(public_path('upload'), $fileName ='profile-picture.jpeg');
+        if($request->hasFile('profile_picture')){
+            $picture  = $request->profile_picture;
 
-        $profileData = $request->validated();
-        $profileData['profile_picture'] = $fileName;
-        $request->user()->update($profileData);
+            // dump($picture->getClientOriginalName());
+            // dump($picture->getClientOriginalName());
+            // dump($picture->getClientSize());
+            // dump($picture->getClientMimeType());
+
+            $fileName = "profile-picture-{$profile->id}." . $picture->getClientOriginalExtension();
+
+            $picture->move(public_path('upload'), $fileName);
+            $profileData['profile_picture'] = $fileName;
+        }
+
+        $profile->update($profileData);
 
         // $request->user()->update($request->validated());
 
