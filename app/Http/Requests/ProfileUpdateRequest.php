@@ -28,6 +28,7 @@ class ProfileUpdateRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'company' => ['nullable'],
             'bio' => ['nullable'],
+            'profile_picture' => ['nullable', 'mimes:png,jpg,bmp']
         ];
     }
 }
