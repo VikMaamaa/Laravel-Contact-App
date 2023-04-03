@@ -23,7 +23,7 @@ class FilterScope implements Scope
                 $columns = $this->filterColumns ?? [];
             }
        foreach ($columns as $column) {
-        if($value = request($column))  {
+        if($value = request()->query($column))  {
             $builder->where($column, $value);
         }
        }
